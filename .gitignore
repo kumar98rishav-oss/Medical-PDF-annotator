@@ -1,0 +1,53 @@
+# ---- Python (backend) ----
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# ---- Node / Vite (frontend) ----
+node_modules/
+frontend/dist/
+dist-ssr/
+.vite/
+*.local
+
+# ---- PyInstaller / desktop build output ----
+build/
+dist/
+*.spec
+
+# ---- Databases & runtime data ----
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+backend/backups/
+backend/processed/
+backend/temp/
+backend/logs/
+backend/thumbnails/
+backend/uploads/
+thumbnails/
+uploads/
+
+# ---- Secrets / env ----
+.env
+.env.*
+!.env.example
+
+# ---- Logs & temp ----
+*.log
+logs/
+temp/
+tmp/
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
