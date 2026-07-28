@@ -1,0 +1,15 @@
+# Server (Render) dependencies — desktop-only packages (pywebview, pyinstaller)
+# are intentionally excluded. Use backend/requirements.txt for desktop builds.
+fastapi==0.109.2
+uvicorn[standard]==0.27.1
+PyMuPDF==1.23.26
+sqlalchemy==2.0.27
+pydantic==2.6.1
+python-multipart==0.0.9
+python-dateutil==2.8.2
+aiofiles==23.2.1
+# OCR (auto-annotation) — needs the system `tesseract` binary at runtime,
+# which is not present on Render's native Python runtime, so OCR is disabled
+# on the server. The packages install fine and the rest of the app works.
+pytesseract==0.3.10
+Pillow==10.2.0
