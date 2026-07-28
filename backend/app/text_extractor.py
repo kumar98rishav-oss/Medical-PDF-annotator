@@ -14,9 +14,16 @@ try:
     from pathlib import Path
     
     def _find_tesseract():
-        """Find tesseract.exe on Windows, checking multiple common locations."""
+        """Locate the tesseract binary.
+
+        On Linux/Mac (e.g. the Render Docker image, which installs the
+        `tesseract-ocr` apt package) the binary is on PATH — resolve it so the
+        logs positively confirm OCR is available. On Windows, check the usual
+        install and bundled locations.
+        """
         if os.name != 'nt':
-            return None  # On Linux/Mac, tesseract is usually in PATH already
+            import shutil
+            return shutil.which('tesseract')  # e.g. /usr/bin/tesseract, or None
         
         candidates = [
             r'C:\Program Files\Tesseract-OCR\tesseract.exe',
@@ -60,10 +67,14 @@ try:
     tess_path = _find_tesseract()
     if tess_path:
         pytesseract.pytesseract.tesseract_cmd = tess_path
-        _setup_tessdata(tess_path)
+        # Windows/bundled builds ship tessdata next to the exe. On Linux the apt
+        # package puts tessdata at Tesseract's own default location, so leave
+        # TESSDATA_PREFIX untouched there (overriding it can break OCR).
+        if os.name == 'nt':
+            _setup_tessdata(tess_path)
         logger.info(f"Tesseract OCR found at: {tess_path}")
     else:
-        logger.warning("Tesseract binary not found in common locations. OCR may fail unless tesseract is in PATH.")
+        logger.warning("Tesseract binary not found. OCR will be disabled for scanned pages.")
         
     OCR_AVAILABLE = True
 except ImportError:
