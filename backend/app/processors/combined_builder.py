@@ -88,7 +88,16 @@ class CombinedBuilder:
                             current_output_page += 1
 
                     visit_end_out = current_output_page
-                    pg_range = f"pg {visit_start_out}-{visit_end_out}"
+
+                    # Bookmark LABEL uses the ORIGINAL source page numbers that were
+                    # marked in the tool (so it cross-references the source record),
+                    # not the re-sequenced position in the combined output. The bookmark
+                    # still NAVIGATES to the visit's page in the combined PDF via
+                    # visit_start_out below.
+                    if visit.start_page == visit.end_page:
+                        pg_range = f"pg {visit.start_page}"
+                    else:
+                        pg_range = f"pg {visit.start_page}-{visit.end_page}"
 
                     if section in MEDICAL_SECTIONS:
                         all_facilities.add(group_key)
